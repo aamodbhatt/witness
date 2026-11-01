@@ -1,0 +1,29 @@
+span.witness-claim {
+  text-decoration-line: underline !important;
+  text-decoration-thickness: 2px !important;
+  text-underline-offset: 3px !important;
+  text-decoration-skip-ink: none !important;
+  cursor: help;
+  border-radius: 2px;
+  transition: background-color 120ms ease;
+}
+span.witness-pending {
+  text-decoration-style: dotted !important;
+  text-decoration-color: #b4b4ba !important;
+}
+span.witness-supported {
+  text-decoration-style: solid !important;
+  text-decoration-color: #1a7f4b !important;
+}
+span.witness-refuted {
+  text-decoration-style: wavy !important;
+  text-decoration-color: #c62828 !important;
+}
+span.witness-unverifiable {
+  text-decoration-style: dashed !important;
+  text-decoration-color: #8a8a8f !important;
+}
+span.witness-active.witness-supported { background-color: rgba(26, 127, 75, 0.1); }
+span.witness-active.witness-refuted { background-color: rgba(198, 40, 40, 0.1); }
+span.witness-active.witness-unverifiable,
+span.witness-active.witness-pending { background-color: rgba(120, 120, 128, 0.12); }

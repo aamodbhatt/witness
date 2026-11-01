@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>witness settings</title>
+<style>
+  body { max-width: 560px; margin: 40px auto; padding: 0 16px; color: #1d1d1f; background: #fbfaf7;
+         font: 15px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  h1 { font-size: 22px; }
+  label { display: block; font-weight: 600; margin-bottom: 6px; }
+  input { width: 100%; box-sizing: border-box; padding: 9px 11px; border: 1px solid #e6e3dc;
+          border-radius: 8px; font: inherit; background: #fff; }
+  .row { display: flex; gap: 10px; margin-top: 12px; }
+  button { padding: 9px 16px; border: 0; border-radius: 8px; background: #1d1d1f; color: #fff;
+           font: inherit; font-weight: 600; cursor: pointer; }
+  button.secondary { background: #e6e3dc; color: #1d1d1f; }
+  #result { margin-top: 14px; color: #6b6b70; }
+</style>
+</head>
+<body>
+  <h1>witness settings</h1>
+  <label for="server">Server URL</label>
+  <input id="server" type="url" placeholder="http://127.0.0.1:8094">
+  <div class="row">
+    <button id="save">Save</button>
+    <button id="test" class="secondary">Test connection</button>
+  </div>
+  <div id="result"></div>
+  <script src="options.js"></script>
+</body>
+</html>

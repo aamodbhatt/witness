@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "witness: fact-check this page",
+  "version": "0.1.0",
+  "description": "Underlines every check-worthy claim on a page: green if Wikipedia supports it, red if it contradicts it, grey if it can't tell. Runs against your local witness server.",
+  "permissions": ["storage"],
+  "host_permissions": ["http://127.0.0.1/*", "http://localhost/*"],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": { "default_popup": "popup.html", "default_title": "witness" },
+  "options_page": "options.html"
+}

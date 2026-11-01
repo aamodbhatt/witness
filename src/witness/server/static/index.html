@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>witness: paste text, check claims</title>
+<style>
+  :root { --bg:#fbfaf7; --ink:#1d1d1f; --muted:#6b6b70; --card:#fff; --line:#e6e3dc;
+          --ok:#1a7f4b; --bad:#c62828; --meh:#8a8a8f; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font:16px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 32px 16px 80px; }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.02em; }
+  p.sub { color: var(--muted); margin: 0 0 20px; }
+  textarea { width:100%; min-height:180px; padding:14px; border:1px solid var(--line);
+             border-radius:10px; font:inherit; background:var(--card); resize:vertical; }
+  .row { display:flex; gap:12px; align-items:center; margin:12px 0 24px; flex-wrap: wrap; }
+  input[type=text] { flex:1; min-width: 200px; padding:10px 12px; border:1px solid var(--line);
+                     border-radius:8px; font:inherit; background:var(--card); }
+  button { padding:10px 18px; border:0; border-radius:8px; background:var(--ink); color:#fff;
+           font:inherit; font-weight:600; cursor:pointer; }
+  button:disabled { opacity:.5; cursor:wait; }
+  #summary { color: var(--muted); font-size: 14px; }
+  #out { background:var(--card); border:1px solid var(--line); border-radius:10px;
+         padding:20px 22px; font-size:17px; line-height:1.9; min-height: 60px; }
+  .w-claim { text-decoration-line: underline; text-decoration-thickness: 2px;
+             text-underline-offset: 4px; cursor: help; border-radius: 3px; }
+  .w-pending { text-decoration-style: dotted; text-decoration-color: #b9b9be; }
+  .w-supported { text-decoration-color: var(--ok); }
+  .w-refuted { text-decoration-color: var(--bad); text-decoration-style: wavy; }
+  .w-unverifiable { text-decoration-color: var(--meh); text-decoration-style: dashed; }
+  .w-claim.active { background: #f2efe7; }
+  #detail { margin-top: 16px; background:var(--card); border:1px solid var(--line);
+            border-radius:10px; padding:16px 18px; display:none; font-size:15px; }
+  .badge { display:inline-block; padding:2px 10px; border-radius:999px; color:#fff;
+           font-weight:700; font-size:12px; letter-spacing:.04em; text-transform:uppercase; }
+  .bar { height:6px; border-radius:3px; background:var(--line); margin:10px 0 12px; overflow:hidden; }
+  .bar > span { display:block; height:100%; }
+  .ev { margin: 8px 0; padding-left: 10px; border-left: 3px solid var(--line); }
+  .ev a { color: var(--ink); font-weight: 600; }
+  .note { color: var(--muted); font-size: 13px; margin-top: 10px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>witness</h1>
+  <p class="sub">Paste text. Every check-worthy sentence gets underlined: green if Wikipedia
+    supports it, red if it contradicts it, grey if it cannot tell. Click a sentence for evidence.</p>
+  <textarea id="text" placeholder="Paste an article or a few claims, one paragraph per line."></textarea>
+  <div class="row">
+    <input id="title" type="text" placeholder="Page subject (optional, resolves 'He', 'The film', ...)">
+    <button id="go">Check</button>
+  </div>
+  <div id="summary"></div>
+  <div id="out"></div>
+  <div id="detail"></div>
+</main>
+<script>
+const COLORS = { supported: "#1a7f4b", refuted: "#c62828", unverifiable: "#8a8a8f" };
+const results = new Map();
+
+function esc(s) {
+  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+}
+
+function renderParagraphs(paragraphs, claims) {
+  const out = document.getElementById("out");
+  out.innerHTML = "";
+  paragraphs.forEach((text, pi) => {
+    const p = document.createElement("p");
+    let cursor = 0;
+    for (const c of claims.filter((c) => c.paragraph === pi).sort((a, b) => a.start - b.start)) {
+      p.append(text.slice(cursor, c.start));
+      const span = document.createElement("span");
+      span.className = "w-claim w-pending";
+      span.dataset.id = c.id;
+      span.textContent = text.slice(c.start, c.end);
+      span.addEventListener("click", () => showDetail(c.id));
+      p.append(span);
+      cursor = c.end;
+    }
+    p.append(text.slice(cursor));
+    out.append(p);
+  });
+}
+
+function showDetail(id) {
+  document.querySelectorAll(".w-claim.active").forEach((n) => n.classList.remove("active"));
+  document.querySelectorAll(`.w-claim[data-id="${id}"]`).forEach((n) => n.classList.add("active"));
+  const r = results.get(id);
+  const box = document.getElementById("detail");
+  box.style.display = "block";
+  if (!r) { box.innerHTML = "<em>Still checking…</em>"; return; }
+  const color = COLORS[r.verdict];
+  const pct = Math.round(r.confidence * 100);
+  box.innerHTML = `
+    <span class="badge" style="background:${color}">${r.verdict}</span>
+    <strong style="margin-left:8px">${pct}% confidence</strong>
+    <div class="bar"><span style="width:${pct}%;background:${color}"></span></div>
+    ${r.query !== r.claim ? `<div class="note">Checked as: “${esc(r.query)}”</div>` : ""}
+    ${r.evidence.map((e) => `<div class="ev"><a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.title)}</a>: ${esc(e.sentence)}</div>`).join("")}
+    <div class="note">Evidence from the June 2017 Wikipedia snapshot used by FEVER.</div>`;
+}
+
+async function run() {
+  const button = document.getElementById("go");
+  const text = document.getElementById("text").value;
+  const title = document.getElementById("title").value || null;
+  const paragraphs = text.split("\n").filter((p) => p.trim());
+  if (!paragraphs.length) return;
+  button.disabled = true;
+  results.clear();
+  document.getElementById("detail").style.display = "none";
+  document.getElementById("summary").textContent = "Extracting claims…";
+  try {
+    const resp = await fetch("/check", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ text: paragraphs.join("\n"), title }),
+    });
+    if (!resp.ok) throw new Error(`server said ${resp.status}: ${await resp.text()}`);
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+    let total = 0;
+    for (;;) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      let cut;
+      while ((cut = buffer.indexOf("\n\n")) >= 0) {
+        const block = buffer.slice(0, cut);
+        buffer = buffer.slice(cut + 2);
+        const event = /^event: (.*)$/m.exec(block)?.[1];
+        const data = JSON.parse(/^data: (.*)$/m.exec(block)?.[1] ?? "null");
+        if (event === "claims") {
+          total = data.claims.length;
+          renderParagraphs(paragraphs, data.claims);
+          document.getElementById("summary").textContent = `Checking ${total} claims…`;
+        } else if (event === "verdict") {
+          results.set(data.id, data);
+          document.querySelectorAll(`.w-claim[data-id="${data.id}"]`).forEach((n) => {
+            n.className = `w-claim w-${data.verdict}`;
+            n.title = `${data.verdict} (${Math.round(data.confidence * 100)}%)`;
+          });
+          document.getElementById("summary").textContent = `Checked ${results.size} of ${total}…`;
+        } else if (event === "done") {
+          document.getElementById("summary").textContent =
+            `${data.supported} supported · ${data.refuted} refuted · ${data.unverifiable} unverifiable`;
+        }
+      }
+    }
+  } catch (err) {
+    document.getElementById("summary").textContent = `Error: ${err.message}`;
+  } finally {
+    button.disabled = false;
+  }
+}
+document.getElementById("go").addEventListener("click", run);
+</script>
+</body>
+</html>
