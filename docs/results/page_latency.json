@@ -1,0 +1,11 @@
+{
+  "page": "marie-curie.html",
+  "latency": {
+    "claims": 13.0,
+    "extract_ms": 4.9880449660122395,
+    "first_verdict_ms": 11276.081303949468,
+    "page_ms": 16175.519728916697,
+    "per_claim_ms": 1243.8870526115911
+  },
+  "extraction_sentences_per_second": 5654.409764291862
+}

@@ -1,0 +1,258 @@
+{
+  "hardware": "single NVIDIA A40 (48 GB), ~8 vCPU, 50 GB RAM",
+  "dev": {
+    "split": "dev",
+    "claims": 19998,
+    "retrieval": {
+      "fused": {
+        "doc_recall": 0.9028652865286528,
+        "evidence_recall@5": 0.8577857785778578
+      },
+      "linker": {
+        "doc_recall": 0.8613111311131113,
+        "evidence_recall@5": 0.8374587458745875
+      },
+      "bm25": {
+        "doc_recall": 0.6428892889288929,
+        "evidence_recall@5": 0.6236873687368737
+      },
+      "fused_no_rerank": {
+        "doc_recall": 0.9028652865286528,
+        "evidence_recall@5": 0.6113111311131113
+      }
+    },
+    "latency": {
+      "linker_ms_mean": 1.3348719823001494,
+      "linker_ms_p95": 3.0099984549451597,
+      "bm25_ms_mean": 14.397881562616515,
+      "bm25_ms_p95": 37.308524089166866,
+      "rerank_ms_mean": 17.558720229761594,
+      "rerank_ms_p95": 22.04197639184713
+    },
+    "verifiers": {
+      "finetuned": {
+        "fused": {
+          "fever_score": 0.7029202920292029,
+          "label_accuracy": 0.7640764076407641,
+          "evidence_recall@5": 0.8577857785778578,
+          "evidence_precision@5": 0.22658265826580234,
+          "doc_recall": 0.9028652865286528,
+          "ece": 0.04959566429153798,
+          "n": 19998.0,
+          "f1_supports": 0.8363510711817554,
+          "f1_refutes": 0.7929874776386405,
+          "f1_nei": 0.6385594320838023,
+          "ece_uncalibrated": 0.12501396284851773,
+          "temperature_used": 1.534742078147499
+        },
+        "linker": {
+          "fever_score": 0.7102210221022103,
+          "label_accuracy": 0.7600760076007601,
+          "evidence_recall@5": 0.8374587458745875,
+          "evidence_precision@5": 0.23476597659763473,
+          "doc_recall": 0.8613111311131113,
+          "ece": 0.061279833697432506,
+          "n": 19998.0,
+          "f1_supports": 0.833636694575901,
+          "f1_refutes": 0.7866955892986262,
+          "f1_nei": 0.6491834928807015
+        },
+        "bm25": {
+          "fever_score": 0.5776077607760776,
+          "label_accuracy": 0.731923192319232,
+          "evidence_recall@5": 0.6236873687368737,
+          "evidence_precision@5": 0.1621812181218263,
+          "doc_recall": 0.6428892889288929,
+          "ece": 0.0780541072638936,
+          "n": 19998.0,
+          "f1_supports": 0.8098150782361309,
+          "f1_refutes": 0.7505515405096995,
+          "f1_nei": 0.6271597216793058
+        },
+        "fused_no_rerank": {
+          "fever_score": 0.592959295929593,
+          "label_accuracy": 0.7274227422742274,
+          "evidence_recall@5": 0.6113111311131113,
+          "evidence_precision@5": 0.1451245124512655,
+          "doc_recall": 0.9028652865286528,
+          "ece": 0.08887602661384844,
+          "n": 19998.0,
+          "f1_supports": 0.8083218156688732,
+          "f1_refutes": 0.7296881328473066,
+          "f1_nei": 0.6454257767548907
+        }
+      },
+      "nli_mnli_fever_anli": {
+        "fused": {
+          "fever_score": 0.6516651665166516,
+          "label_accuracy": 0.716971697169717,
+          "evidence_recall@5": 0.8577857785778578,
+          "evidence_precision@5": 0.22658265826580234,
+          "doc_recall": 0.9028652865286528,
+          "ece": 0.08544279797860889,
+          "n": 19998.0,
+          "f1_supports": 0.8098151260504203,
+          "f1_refutes": 0.7537708654555205,
+          "f1_nei": 0.5278322226577813,
+          "ece_uncalibrated": 0.2256836647330906,
+          "temperature_used": 2.4346202437876108
+        }
+      },
+      "nli_mnli_snli": {
+        "fused": {
+          "fever_score": 0.5754575457545754,
+          "label_accuracy": 0.6328632863286329,
+          "evidence_recall@5": 0.8577857785778578,
+          "evidence_precision@5": 0.22658265826580234,
+          "doc_recall": 0.9028652865286528,
+          "ece": 0.05218106633690679,
+          "n": 19998.0,
+          "f1_supports": 0.7091155685630667,
+          "f1_refutes": 0.6958710291816883,
+          "f1_nei": 0.45614035087719296,
+          "ece_uncalibrated": 0.3235365935046551,
+          "temperature_used": 4.111224690549503
+        }
+      }
+    }
+  },
+  "calibration": {
+    "split": "calib",
+    "claims": 2000,
+    "retrieval": {
+      "fused": {
+        "doc_recall": 0.8972829688535454,
+        "evidence_recall@5": 0.8369781312127237
+      },
+      "linker": {
+        "doc_recall": 0.8436050364479788,
+        "evidence_recall@5": 0.8124585818422797
+      },
+      "bm25": {
+        "doc_recall": 0.5500331345261763,
+        "evidence_recall@5": 0.5294897282968853
+      },
+      "fused_no_rerank": {
+        "doc_recall": 0.8972829688535454,
+        "evidence_recall@5": 0.6043737574552683
+      }
+    },
+    "latency": {
+      "linker_ms_mean": 1.1805823089089245,
+      "linker_ms_p95": 2.7911553625017405,
+      "bm25_ms_mean": 11.689654816233087,
+      "bm25_ms_p95": 26.116599544184282,
+      "rerank_ms_mean": 19.662388878525235,
+      "rerank_ms_p95": 23.512870156991994
+    },
+    "verifiers": {
+      "finetuned": {
+        "fused": {
+          "fever_score": 0.749,
+          "label_accuracy": 0.837,
+          "evidence_recall@5": 0.8369781312127237,
+          "evidence_precision@5": 0.22995361166334793,
+          "doc_recall": 0.8972829688535454,
+          "ece": 0.08060310559754963,
+          "n": 2000.0,
+          "f1_supports": 0.9181494661921709,
+          "f1_refutes": 0.7908571428571428,
+          "f1_nei": 0.6750285062713798,
+          "ece_uncalibrated": 0.08060310559754963,
+          "temperature_used": 1.0
+        },
+        "linker": {
+          "fever_score": 0.7435,
+          "label_accuracy": 0.8135,
+          "evidence_recall@5": 0.8124585818422797,
+          "evidence_precision@5": 0.23896620278329517,
+          "doc_recall": 0.8436050364479788,
+          "ece": 0.10036788388516514,
+          "n": 2000.0,
+          "f1_supports": 0.8953001395998138,
+          "f1_refutes": 0.7871116225546605,
+          "f1_nei": 0.6578411405295316
+        },
+        "bm25": {
+          "fever_score": 0.5545,
+          "label_accuracy": 0.793,
+          "evidence_recall@5": 0.5294897282968853,
+          "evidence_precision@5": 0.14221338634857342,
+          "doc_recall": 0.5500331345261763,
+          "ece": 0.11430712162245513,
+          "n": 2000.0,
+          "f1_supports": 0.8738404452690167,
+          "f1_refutes": 0.7620253164556963,
+          "f1_nei": 0.650853889943074
+        },
+        "fused_no_rerank": {
+          "fever_score": 0.613,
+          "label_accuracy": 0.786,
+          "evidence_recall@5": 0.6043737574552683,
+          "evidence_precision@5": 0.14857521537441792,
+          "doc_recall": 0.8972829688535454,
+          "ece": 0.1283759760158405,
+          "n": 2000.0,
+          "f1_supports": 0.8704663212435233,
+          "f1_refutes": 0.7496688741721855,
+          "f1_nei": 0.6506238859180035
+        }
+      },
+      "nli_mnli_fever_anli": {
+        "fused": {
+          "fever_score": 0.706,
+          "label_accuracy": 0.799,
+          "evidence_recall@5": 0.8369781312127237,
+          "evidence_precision@5": 0.22995361166334793,
+          "doc_recall": 0.8972829688535454,
+          "ece": 0.15226222632081374,
+          "n": 2000.0,
+          "f1_supports": 0.9058927000879508,
+          "f1_refutes": 0.7282377919320595,
+          "f1_nei": 0.5739795918367347,
+          "ece_uncalibrated": 0.15226222632081374,
+          "temperature_used": 1.0
+        }
+      },
+      "nli_mnli_snli": {
+        "fused": {
+          "fever_score": 0.584,
+          "label_accuracy": 0.6635,
+          "evidence_recall@5": 0.8369781312127237,
+          "evidence_precision@5": 0.22995361166334793,
+          "doc_recall": 0.8972829688535454,
+          "ece": 0.2929495525647991,
+          "n": 2000.0,
+          "f1_supports": 0.7955182072829132,
+          "f1_refutes": 0.6292134831460675,
+          "f1_nei": 0.3799772468714449,
+          "ece_uncalibrated": 0.2929495525647991,
+          "temperature_used": 1.0
+        }
+      }
+    },
+    "fitted_temperatures": {
+      "finetuned": 1.534742078147499,
+      "nli_mnli_fever_anli": 2.4346202437876108,
+      "nli_mnli_snli": 4.111224690549503
+    }
+  },
+  "index": {
+    "pages": 5396106.0,
+    "aliases": 9584579.0,
+    "bm25_vocab": 2645184.0,
+    "bm25_postings": 212077687.0,
+    "store_and_alias_seconds": 454.8,
+    "total_seconds": 486.5,
+    "store_bytes": 5018398720.0,
+    "bm25_bytes": 1741578314.0
+  },
+  "verifier_training": {
+    "examples": 50573.0,
+    "steps": 1581.0,
+    "skipped_steps": 0.0,
+    "train_seconds": 675.4,
+    "examples_per_second": 74.9,
+    "peak_vram_gb": 14.19
+  }
+}
