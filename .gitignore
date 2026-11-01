@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+*.egg-info/
+
+# Node / browsers
+node_modules/
+playwright-report/
+test-results/
+
+# Generated data, indexes, models and runs (rebuilt with `witness build-index`, etc.)
+data/
+runs/
+artifacts/
+target/
+dist/
+build/
+.jobs/
+.cache/
+*.ckpt
+*.safetensors
+*.log
+
+# Local working notes
+/RESUME.md

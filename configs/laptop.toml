@@ -1,0 +1,22 @@
+# Lite index (the 500k most-linked titles, 401k pages) on CPU, no GPU and no training.
+# Build the index with:
+#   witness build-index --lite 500000 --out data/index/lite
+index_dir = "data/index/lite"
+device = "cpu"
+
+[reranker]
+batch_size = 32
+max_sentences_per_page = 20
+
+[fusion]
+top_pages = 6
+
+# The off-the-shelf NLI model the fine-tuned verifier starts from, downloaded from the
+# Hugging Face Hub on first start. Its temperature was fit on the same 2,000 held-out
+# FEVER train claims as the fine-tuned model's. After `witness train-verifier`, use
+# configs/cpu.toml (full index, fine-tuned verifier, CPU) instead.
+[verifier]
+model = "MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli"
+calibration_file = "configs/calibration/mnli-fever-anli.json"
+batch_size = 8
+max_length = 320

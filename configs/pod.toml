@@ -1,0 +1,10 @@
+# Full FEVER 2017 snapshot (5.4M pages) on a CUDA GPU.
+index_dir = "data/index/full"
+device = "cuda"
+
+[reranker]
+batch_size = 256
+
+[verifier]
+model = "artifacts/verifier"
+batch_size = 64

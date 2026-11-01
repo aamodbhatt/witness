@@ -1,0 +1,11 @@
+# Full FEVER 2017 snapshot (5.4M pages) with every model on the CPU.
+# Used for the README demo recording, so the GIF shows CPU-only latency.
+index_dir = "data/index/full"
+device = "cpu"
+
+[reranker]
+batch_size = 64
+
+[verifier]
+model = "artifacts/verifier"
+batch_size = 16
