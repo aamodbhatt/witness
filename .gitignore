@@ -24,6 +24,3 @@ build/
 *.ckpt
 *.safetensors
 *.log
-
-# Local working notes
-/RESUME.md

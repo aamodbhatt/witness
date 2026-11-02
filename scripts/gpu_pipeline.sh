@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Every GPU step of the published results, in one gpu-run slot:
+# Every GPU step of the published results, run in sequence:
 #   1. cross-encoder sentence reranking for the calibration split and FEVER dev,
 #   2. verifier fine-tuning,
 #   3. verification with the fine-tuned and the off-the-shelf models,

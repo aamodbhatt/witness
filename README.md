@@ -302,6 +302,27 @@ tests/          unit, integration, API and browser tests
 - Optional local LLM decontextualisation for long-range coreference.
 - A fresher knowledge snapshot (a recent Wikipedia dump) for everyday browsing.
 
-## License
+## License and credits
 
-MIT, see [LICENSE](LICENSE). The demo fixture adapts Wikipedia text under CC BY-SA 4.0.
+Code is MIT, see [LICENSE](LICENSE). Third-party content keeps its own license:
+
+- **Demo fixture.** `docs/demo/marie-curie.html`, also shown in `docs/assets/demo.gif` and
+  `docs/assets/hover-card.png`, adapts the lead section of the Wikipedia article
+  ["Marie Curie"](https://en.wikipedia.org/wiki/Marie_Curie) with three facts deliberately
+  altered. It is [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), not MIT.
+- **Evidence text.** The evidence sentences in the GIF, the hover card and the CLI sample
+  come from the June 2017 Wikipedia snapshot distributed with FEVER (Wikipedia
+  contributors, [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)).
+- **FEVER.** Thorne, Vlachos, Christodoulopoulos and Mittal, "FEVER: a large-scale dataset
+  for Fact Extraction and VERification", NAACL-HLT 2018 ([fever.ai](https://fever.ai)),
+  under [its license terms](https://fever.ai/download/fever/license.html) (Wikipedia's,
+  else CC BY-SA 3.0). Not redistributed here. `evaluation/fever_scorer.py` reimplements
+  the official [fever-scorer](https://github.com/sheffieldnlp/fever-scorer).
+- **Models**, downloaded from the Hugging Face Hub at run time and not redistributed, each
+  under the license on its model card:
+  [MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli](https://huggingface.co/MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli)
+  (verifier and fine-tuning start point),
+  [cross-encoder/ms-marco-MiniLM-L6-v2](https://huggingface.co/cross-encoder/ms-marco-MiniLM-L6-v2)
+  (sentence ranker) and
+  [cross-encoder/nli-deberta-v3-base](https://huggingface.co/cross-encoder/nli-deberta-v3-base)
+  (zero-shot baseline).
